@@ -1,17 +1,11 @@
-## STAGE 1: BUILDING ANGULAR APPLICATION ##
+FROM node:alpine
 
-FROM node:20.12.1 as build
+WORKDIR /usr/src/app
 
-COPY . .
-WORKDIR /calculator
+COPY . /usr/src/app
 
+RUN npm install -g @angular/cli
 
 RUN npm install
-RUN $(npm bin)/ng build 
 
-##STAGE 2: RUN NGINX TO SERVER APPLICATION ##
-
-FROM nginix
-COPY --from=build /calculator/dist/calculator /usr/share/nginix/html/
-
-EXPOSE 80
+CMD ["ng", "serve", "--host", "0.0.0.0"]
